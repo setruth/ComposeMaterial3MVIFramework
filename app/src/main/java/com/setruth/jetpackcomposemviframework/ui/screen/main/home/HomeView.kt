@@ -6,8 +6,6 @@ import androidx.compose.runtime.Composable
 
 
 @Composable
-fun HomeView(){
-    Surface {
-        Text(text = "主页")
-    }
+fun HomeView() {
+    Text(text = "主页")
 }

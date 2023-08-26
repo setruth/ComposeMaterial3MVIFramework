@@ -53,6 +53,8 @@ android {
 }
 
 dependencies {
+    //icon+
+    implementation("androidx.compose.material:material-icons-extended:1.4.3")
     // hilt
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")

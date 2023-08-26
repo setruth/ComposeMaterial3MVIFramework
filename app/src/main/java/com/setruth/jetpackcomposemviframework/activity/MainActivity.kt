@@ -9,7 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.setruth.jetpackcomposemviframework.constant.APPRoute
 import com.setruth.jetpackcomposemviframework.ui.screen.login.LoginView
 import com.setruth.jetpackcomposemviframework.ui.screen.main.MainView
-import com.setruth.jetpackcomposemviframework.ui.theme.JetpackComposeMVIFrameworkTheme
+import com.setruth.jetpackcomposemviframework.ui.theme.APPTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            JetpackComposeMVIFrameworkTheme {
+            APPTheme {
                 val appNavController = rememberNavController()
                 NavHost(navController = appNavController, startDestination = APPRoute.LOGIN) {
                     composable(APPRoute.LOGIN) {
