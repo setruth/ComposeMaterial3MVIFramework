@@ -1,7 +1,5 @@
 package com.setruth.jetpackcomposemviframework.constant
 
-import android.net.wifi.hotspot2.pps.HomeSp
-
 object APPRoute {
     const val LOGIN="login"
     const val MAIN_VIEW="main_view"

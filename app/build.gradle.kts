@@ -53,6 +53,11 @@ android {
 }
 
 dependencies {
+    // retrofit2
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.1.0")
+    // cookie
+    implementation("com.github.franmontiel:PersistentCookieJar:v1.0.1")
     //icon+
     implementation("androidx.compose.material:material-icons-extended:1.4.3")
     // hilt
