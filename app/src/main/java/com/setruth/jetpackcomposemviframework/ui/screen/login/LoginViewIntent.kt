@@ -1,5 +1,6 @@
 package com.setruth.jetpackcomposemviframework.ui.screen.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.setruth.jetpackcomposemviframework.model.body.LoginBody
@@ -7,9 +8,9 @@ import com.setruth.jetpackcomposemviframework.network.RequestBuilder
 import com.setruth.jetpackcomposemviframework.network.RequestStatus
 import com.setruth.jetpackcomposemviframework.network.api.UserAPI
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,8 +30,8 @@ class LoginViewModel @Inject constructor(
     private val requestBuilder: RequestBuilder
 ) : ViewModel() {
     //登录通过状态
-    private var _loginPassState = MutableStateFlow(false)
-    val loginPassState = _loginPassState.asStateFlow()
+    private var _loginRequestState = MutableStateFlow(LoginRequestState.NOTING)
+    val loginRequestState = _loginRequestState.asStateFlow()
 
     //登录的信息
     private var _loginInfoState = MutableStateFlow(LoginInfoState())
@@ -57,27 +58,41 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun loginRequest() {
+    private fun loginRequest() = viewModelScope.launch {
+        _loginRequestState.update {
+            LoginRequestState.LOADING
+        }
         requestBuilder.apply {
-            viewModelScope.launch {
-                getResponse {
-                    getAPI(UserAPI::class.java).login(
-                        LoginBody(
-                            account = loginInfoState.value.loginAct,
-                            password = loginInfoState.value.loginPwd
-                        )
-                    ).execute()
-                }.collect{
-                    when (it) {
-                        is RequestStatus.Error -> {}
-                        RequestStatus.Loading -> {}
-                        is RequestStatus.Success -> {
-                            _loginPassState.value = true
+            getResponse {
+                getAPI(UserAPI::class.java).login(
+                    LoginBody(
+                        account = loginInfoState.value.loginAct,
+                        password = loginInfoState.value.loginPwd
+                    )
+                ).execute()
+            }.collect {
+                when (it) {
+                    is RequestStatus.Error -> {
+                        Log.e("TAG", "loginRequest:${it.errMsg} ${it.exception} ", )
+                    }
+                    RequestStatus.Loading -> {}
+                    is RequestStatus.Success -> {
+                        _loginRequestState.update {
+                            LoginRequestState.SUCCESS
                         }
                     }
                 }
             }
         }
-
     }
 }
+//        viewModelScope.launch {
+//            _loginRequestState.update{
+//                LoginRequestState.LOADING
+//            }
+//            delay(1500)
+//            _loginRequestState.update{
+//                LoginRequestState.NOTING
+//            }
+//        }
+

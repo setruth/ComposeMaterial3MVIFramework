@@ -17,8 +17,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class RequestBuilder(context: Context,private val baseUrl:String) {
+class RequestBuilder(context: Context) {
     private var retrofitBuilder: Retrofit
+
     init {
         OkHttpClient.Builder()
             .cookieJar(PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context)))
@@ -28,7 +29,7 @@ class RequestBuilder(context: Context,private val baseUrl:String) {
             .build()
             .apply {
                 retrofitBuilder = Retrofit.Builder()
-                    .baseUrl(baseUrl)
+                    .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(this)
                     .build()
@@ -73,6 +74,10 @@ class RequestBuilder(context: Context,private val baseUrl:String) {
         }.catch { e ->
             emit(RequestStatus.Error(e as Exception, "网络请求无法开始"))
         }.flowOn(Dispatchers.IO)
+    companion object{
+        private const val PORT:Int=1234
+        const val BASE_URL="http://10.0.2.2:$PORT"
+    }
 }
 sealed class RequestStatus<out T> {
     data class Success<out T>(val data: T) : RequestStatus<T>()

@@ -8,3 +8,9 @@ data class LoginModeState(
     var autoLogin:Boolean=false,
     var rememberPwd:Boolean=false,
 )
+enum class LoginRequestState{
+    LOADING,
+    ERR,
+    SUCCESS,
+    NOTING
+}

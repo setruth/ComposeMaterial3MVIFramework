@@ -1,6 +1,12 @@
 package com.setruth.jetpackcomposemviframework.ui.screen.login
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,16 +24,16 @@ import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -55,10 +61,10 @@ fun LoginView(
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
 
-    val loginPass by loginViewModel.loginPassState.collectAsState()
-    LaunchedEffect(loginPass){
-        if (loginPass) {
-            appNavController!!.navigate(
+    val loginRequestState by loginViewModel.loginRequestState.collectAsState()
+    LaunchedEffect(loginRequestState) {
+        if (loginRequestState==LoginRequestState.SUCCESS){
+            appNavController.navigate(
                 APPRoute.MAIN_VIEW,
                 NavOptions.Builder().setPopUpTo(APPRoute.LOGIN, true).build()
             )
@@ -69,20 +75,13 @@ fun LoginView(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun View(loginViewModel: LoginViewModel) {
+private fun View(loginViewModel: LoginViewModel = hiltViewModel()) {
+    val loginRequestState by loginViewModel.loginRequestState.collectAsState()
     val loginInfoState by loginViewModel.loginInfoState.collectAsState()
     val loginModeState by loginViewModel.loginModeState.collectAsState()
     Scaffold(
         containerColor = MaterialTheme.colorScheme.surface,
         modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                title = { Text(text = "登录") }
-            )
-        },
     ) {
         val padding = it
         Column(
@@ -93,7 +92,7 @@ private fun View(loginViewModel: LoginViewModel) {
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                modifier = Modifier.size(100.dp),
+                modifier = Modifier.size(90.dp),
                 painter = painterResource(id = R.mipmap.logo),
                 contentDescription = "logo占位"
             )
@@ -105,13 +104,7 @@ private fun View(loginViewModel: LoginViewModel) {
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    contentColor = MaterialTheme.colorScheme.onSurface
-                ),
-                elevation = CardDefaults.elevatedCardElevation(1.dp)
-            ) {
+
                 Column(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
                     SingleInput(
                         modifier = Modifier
@@ -170,18 +163,42 @@ private fun View(loginViewModel: LoginViewModel) {
                         }
                     }
                 }
-            }
+
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 15.dp),
-                onClick = { loginViewModel.sendLoginIntent(LoginIntent.LoginRequest) },
+                onClick = {
+                    loginViewModel.sendLoginIntent(LoginIntent.LoginRequest)
+                },
+                enabled = loginRequestState!=LoginRequestState.LOADING,
                 shape = RoundedCornerShape(10.dp)
             ) {
-                Text(
-                    text = "登录",
-                    style = MaterialTheme.typography.bodyLarge,
-                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    AnimatedVisibility(
+                        visible = loginRequestState==LoginRequestState.LOADING,
+                        enter = fadeIn()+expandVertically(),
+                        exit = fadeOut()+shrinkVertically(
+
+                        )
+                    ) {
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+                    }
+                    AnimatedVisibility(
+                        visible = loginRequestState!=LoginRequestState.LOADING,
+                        enter = fadeIn()+expandVertically(expandFrom =Alignment.Top ),
+                        exit = fadeOut()+shrinkVertically(shrinkTowards = Alignment.Top)
+                    ) {
+                        Text(
+                            text = "登录",
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                    }
+                }
+
+
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -200,58 +217,50 @@ private fun View(loginViewModel: LoginViewModel) {
                     color = MaterialTheme.colorScheme.onSurface,
                 )
             }
-            Spacer(modifier = Modifier.padding(top = 20.dp))
+           Row(modifier = Modifier.padding(top = 20.dp), verticalAlignment = Alignment.CenterVertically) {
+               Divider(modifier = Modifier.weight(1f))
+               Text(text = "联系我们", modifier = Modifier.padding(horizontal = 10.dp), style = MaterialTheme.typography.labelSmall)
+               Divider(modifier = Modifier.weight(1f))
+           }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 TextButton(
-                    modifier = Modifier.padding(top = 15.dp),
                     onClick = {}
                 ) {
-                    Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.secondary
-                        ),
-                        onClick = {
-
-                        }
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .padding(15.dp)
-                                .size(30.dp),
-                            imageVector = Icons.Rounded.Public,
-                            contentDescription = "网站",
-                        )
-                    }
+                    Icon(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(30.dp),
+                        imageVector = Icons.Rounded.Public,
+                        contentDescription = "网站",
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
                 }
                 TextButton(
-                    modifier = Modifier.padding(top = 15.dp),
                     onClick = {}
                 ) {
-                    Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.secondary
-                        ),
-                        onClick = {
-
-                        }
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .padding(15.dp)
-                                .size(30.dp),
-                            imageVector = Icons.Rounded.Mail,
-                            contentDescription = "邮箱",
-                        )
-                    }
+                    Icon(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(30.dp),
+                        tint = MaterialTheme.colorScheme.secondary,
+                        imageVector = Icons.Rounded.Mail,
+                        contentDescription = "邮箱",
+                    )
                 }
             }
-            Spacer(modifier = Modifier.padding(top= 15.dp))
-            Text(text = "技术支持：上海xxxxxxxxx有限公司", style = MaterialTheme.typography.labelMedium)
+            Spacer(modifier = Modifier.padding(top = 15.dp))
+            Text(
+                text = "技术支持：上海xxxxxxxxx有限公司",
+                style = MaterialTheme.typography.labelSmall
+            )
             Spacer(modifier = Modifier.padding(vertical = 3.dp))
-            Text(text = "软件所属：上海xxxxxxxxx有限公司", style = MaterialTheme.typography.labelMedium)
+            Text(
+                text = "软件所属：上海xxxxxxxxx有限公司",
+                style = MaterialTheme.typography.labelSmall
+            )
         }
     }
 }
@@ -260,6 +269,6 @@ private fun View(loginViewModel: LoginViewModel) {
 @Preview
 fun PreviewLoginView() {
     APPTheme {
-        View(LoginViewModel())
+        View()
     }
 }

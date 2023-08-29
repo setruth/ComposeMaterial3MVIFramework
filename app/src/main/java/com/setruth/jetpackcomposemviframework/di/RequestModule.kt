@@ -2,7 +2,6 @@ package com.setruth.jetpackcomposemviframework.di
 
 import android.app.Application
 import android.content.Context
-import com.setruth.jetpackcomposemviframework.constant.BASE_URL
 import com.setruth.jetpackcomposemviframework.network.RequestBuilder
 import dagger.Module
 import dagger.Provides
@@ -17,6 +16,6 @@ import dagger.hilt.components.SingletonComponent
 object RequestModule {
     @Provides
     fun providesRequestModule(@ApplicationContext context: Context):RequestBuilder{
-        return RequestBuilder(context, BASE_URL)
+        return RequestBuilder(context)
     }
 }

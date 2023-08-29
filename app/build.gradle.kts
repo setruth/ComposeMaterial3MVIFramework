@@ -53,6 +53,11 @@ android {
 }
 
 dependencies {
+    // preferencesDatastore
+    implementation("androidx.datastore:datastore-preferences-core:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    // mmkv
+    implementation("com.tencent:mmkv:1.3.0")
     // retrofit2
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.1.0")

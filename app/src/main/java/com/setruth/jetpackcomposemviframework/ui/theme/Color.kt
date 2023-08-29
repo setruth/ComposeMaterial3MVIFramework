@@ -1,9 +1,9 @@
 package com.setruth.jetpackcomposemviframework.ui.theme
 import androidx.compose.ui.graphics.Color
 
-val md_theme_light_primary = Color(0xFF006876)
+val md_theme_light_primary = Color(0xFF004D76)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
-val md_theme_light_primaryContainer = Color(0xFFA0EFFF)
+val md_theme_light_primaryContainer = Color(0xFFE3F3FA)
 val md_theme_light_onPrimaryContainer = Color(0xFF001F25)
 val md_theme_light_secondary = Color(0xFF4A6267)
 val md_theme_light_onSecondary = Color(0xFFFFFFFF)
@@ -19,7 +19,7 @@ val md_theme_light_onError = Color(0xFFFFFFFF)
 val md_theme_light_onErrorContainer = Color(0xFF410002)
 val md_theme_light_background = Color(0xFFF6FFF1)
 val md_theme_light_onBackground = Color(0xFF002107)
-val md_theme_light_surface = Color(0xFFF6FFF1)
+val md_theme_light_surface = Color(0xFFF1F9FF)
 val md_theme_light_onSurface = Color(0xFF002107)
 val md_theme_light_surfaceVariant = Color(0xFFDBE4E6)
 val md_theme_light_onSurfaceVariant = Color(0xFF3F484A)
