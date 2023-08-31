@@ -18,7 +18,7 @@ val Typography = Typography(
     titleMedium = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Medium,
-        fontSize = 25.sp,
+        fontSize = 20.sp,
         letterSpacing = 0.5.sp
     )
     /* Other default text styles to override

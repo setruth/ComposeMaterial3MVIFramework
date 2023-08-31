@@ -62,37 +62,33 @@ class LoginViewModel @Inject constructor(
         _loginRequestState.update {
             LoginRequestState.LOADING
         }
-        requestBuilder.apply {
-            getResponse {
-                getAPI(UserAPI::class.java).login(
-                    LoginBody(
-                        account = loginInfoState.value.loginAct,
-                        password = loginInfoState.value.loginPwd
-                    )
-                ).execute()
-            }.collect {
-                when (it) {
-                    is RequestStatus.Error -> {
-                        Log.e("TAG", "loginRequest:${it.errMsg} ${it.exception} ", )
-                    }
-                    RequestStatus.Loading -> {}
-                    is RequestStatus.Success -> {
-                        _loginRequestState.update {
-                            LoginRequestState.SUCCESS
-                        }
-                    }
-                }
-            }
+        //模拟网络请求
+        delay(2000L)
+        _loginRequestState.update {
+            LoginRequestState.SUCCESS
         }
-    }
-}
-//        viewModelScope.launch {
-//            _loginRequestState.update{
-//                LoginRequestState.LOADING
-//            }
-//            delay(1500)
-//            _loginRequestState.update{
-//                LoginRequestState.NOTING
+        //网络工具使用示例
+//        requestBuilder.apply {
+//            getResponse {
+//                getAPI(UserAPI::class.java).login(
+//                    LoginBody(
+//                        account = loginInfoState.value.loginAct,
+//                        password = loginInfoState.value.loginPwd
+//                    )
+//                ).execute()
+//            }.collect {
+//                when (it) {
+//                    is RequestStatus.Error -> {
+//                        Log.e("TAG", "loginRequest:${it.errMsg} ${it.exception} ", )
+//                    }
+//                    RequestStatus.Loading -> {}
+//                    is RequestStatus.Success -> {
+//                        _loginRequestState.update {
+//                            LoginRequestState.SUCCESS
+//                        }
+//                    }
+//                }
 //            }
 //        }
-
+    }
+}

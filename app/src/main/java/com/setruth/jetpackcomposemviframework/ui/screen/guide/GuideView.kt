@@ -20,8 +20,8 @@ fun GuideView(
     LaunchedEffect(enterAppState) {
         if (enterAppState) {
             appNavController.navigate(
-                APPRoute.LOGIN,
-                NavOptions.Builder().setPopUpTo(APPRoute.Guide, true).build()
+                APPRoute.LOGIN_VIEW,
+                NavOptions.Builder().setPopUpTo(APPRoute.GUIDE_VIEW, true).build()
             )
         }
     }

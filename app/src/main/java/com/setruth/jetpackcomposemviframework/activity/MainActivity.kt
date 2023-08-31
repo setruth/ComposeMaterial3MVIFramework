@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.setruth.jetpackcomposemviframework.constant.APPRoute
 import com.setruth.jetpackcomposemviframework.constant.KVKey
 import com.setruth.jetpackcomposemviframework.constant.kv
+import com.setruth.jetpackcomposemviframework.ui.screen.detail.DetailView
 import com.setruth.jetpackcomposemviframework.ui.screen.guide.GuideView
 import com.setruth.jetpackcomposemviframework.ui.screen.login.LoginView
 import com.setruth.jetpackcomposemviframework.ui.screen.main.MainView
@@ -24,20 +25,23 @@ class MainActivity : ComponentActivity() {
         setContent {
             APPTheme {
                 val startRoute = if (kv.getBoolean(KVKey.FIRST_ENTER, false)) {
-                    APPRoute.LOGIN
+                    APPRoute.LOGIN_VIEW
                 } else {
-                    APPRoute.Guide
+                    APPRoute.GUIDE_VIEW
                 }
                 val appNavController = rememberNavController()
                 NavHost(navController = appNavController, startDestination =startRoute) {
-                    composable(APPRoute.LOGIN) {
+                    composable(APPRoute.LOGIN_VIEW) {
                         LoginView(appNavController)
                     }
                     composable(APPRoute.MAIN_VIEW) {
                         MainView(appNavController)
                     }
-                    composable(APPRoute.Guide) {
+                    composable(APPRoute.GUIDE_VIEW) {
                         GuideView(appNavController)
+                    }
+                    composable(APPRoute.DETAIL_VIEW) {
+                        DetailView(appNavController)
                     }
                 }
             }

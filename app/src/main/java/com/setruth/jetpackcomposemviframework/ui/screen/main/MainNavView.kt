@@ -42,23 +42,31 @@ import com.setruth.jetpackcomposemviframework.ui.screen.main.user.UserView
 fun MainView(appNavController: NavHostController) {
     val mainViewNavController = rememberNavController()
     val mainNavItemList =
-        listOf(Triple("home","主页", Icons.Outlined.Home), Triple("user","个人", Icons.Outlined.AccountBox))
+        listOf(
+            Triple("home", "主页", Icons.Outlined.Home),
+            Triple("user", "个人", Icons.Outlined.AccountBox)
+        )
     var bottomNavSelect by remember { mutableStateOf(0) }
     val snackBarState = remember { SnackbarHostState() }
     NavDestination
-    mainViewNavController.addOnDestinationChangedListener{_, destination, _->
-       for ((index,item) in mainNavItemList.withIndex()){
-           Log.e("TAG", "MainView:${destination.route},${index} ${item.first}", )
-           if (item.first==destination.route) {
-               Log.e("TAG", "MainView:${destination.route},${index} ${item.first}", )
-               bottomNavSelect=index
-               break;
-           }
-       }
+    mainViewNavController.addOnDestinationChangedListener { _, destination, _ ->
+        for ((index, item) in mainNavItemList.withIndex()) {
+            Log.e("TAG", "MainView:${destination.route},${index} ${item.first}")
+            if (item.first == destination.route) {
+                Log.e("TAG", "MainView:${destination.route},${index} ${item.first}")
+                bottomNavSelect = index
+                break;
+            }
+        }
     }
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = mainNavItemList[bottomNavSelect].second)})
+            TopAppBar(title = {
+                Text(
+                    text = mainNavItemList[bottomNavSelect].second,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            })
         },
         bottomBar = {
             BottomNav(bottomNavSelect, mainNavItemList) {
@@ -82,15 +90,16 @@ fun MainView(appNavController: NavHostController) {
         Box(modifier = Modifier.padding(it)) {
             NavHost(navController = mainViewNavController, startDestination = MainNavRoute.Home) {
                 composable(MainNavRoute.Home) {
-                    HomeView()
+                    HomeView(snackBarState, appNavController)
                 }
                 composable(MainNavRoute.User) {
-                    UserView(snackBarState)
+                    UserView(snackBarState, appNavController)
                 }
             }
         }
     }
 }
+
 @Composable
 fun BottomNav(
     nowIndex: Int,
@@ -110,7 +119,7 @@ fun BottomNav(
                         )
                     }
                 },
-                label = { Text(pair.second)},
+                label = { Text(pair.second) },
                 selected = (nowIndex == index),
                 onClick = { click(index) },
                 colors = NavigationBarItemDefaults.colors(
