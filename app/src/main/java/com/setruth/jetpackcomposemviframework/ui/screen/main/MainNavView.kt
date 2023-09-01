@@ -33,7 +33,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.setruth.jetpackcomposemviframework.constant.MainNavRoute
+import com.setruth.jetpackcomposemviframework.config.MainNavRoute
 import com.setruth.jetpackcomposemviframework.ui.screen.main.home.HomeView
 import com.setruth.jetpackcomposemviframework.ui.screen.main.user.UserView
 

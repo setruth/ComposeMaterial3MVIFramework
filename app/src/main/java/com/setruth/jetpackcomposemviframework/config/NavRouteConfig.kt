@@ -1,4 +1,4 @@
-package com.setruth.jetpackcomposemviframework.constant
+package com.setruth.jetpackcomposemviframework.config
 
 object APPRoute {
     const val GUIDE_VIEW="guide"

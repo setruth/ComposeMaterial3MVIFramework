@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.setruth.jetpackcomposemviframework.constant.APPRoute
+import com.setruth.jetpackcomposemviframework.config.APPRoute
 import com.setruth.jetpackcomposemviframework.constant.KVKey
 import com.setruth.jetpackcomposemviframework.constant.kv
 import com.setruth.jetpackcomposemviframework.ui.screen.detail.DetailView

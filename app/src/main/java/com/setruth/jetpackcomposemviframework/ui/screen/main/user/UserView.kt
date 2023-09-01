@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
-import com.setruth.jetpackcomposemviframework.constant.APPRoute
+import com.setruth.jetpackcomposemviframework.config.APPRoute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

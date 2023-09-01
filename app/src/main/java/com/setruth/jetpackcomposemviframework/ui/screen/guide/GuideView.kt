@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
-import com.setruth.jetpackcomposemviframework.constant.APPRoute
+import com.setruth.jetpackcomposemviframework.config.APPRoute
 
 @Composable
 fun GuideView(
