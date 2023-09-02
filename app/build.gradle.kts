@@ -53,6 +53,9 @@ android {
 }
 
 dependencies {
+    // accompanist-systemuicontroller
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
+
     // preferencesDatastore
     implementation("androidx.datastore:datastore-preferences-core:1.0.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")

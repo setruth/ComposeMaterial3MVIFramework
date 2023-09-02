@@ -204,7 +204,6 @@ class LoginViewModel @Inject constructor(
     private suspend fun saveLoginAllState() {
         saveLoginInfo()
         saveLoginMode()
-
     }
 
     private fun saveLoginMode() = loginModeState.value.apply {
