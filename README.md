@@ -57,27 +57,27 @@
 
 ### 包树形结构
 
->├─activity
->├─config
->├─constant
->├─di
->├─model
->│  ├─body
->│  └─state
->├─network
->│  ├─api
->│  └─res
->├─ui
->│  ├─components
->│  ├─screen
->│  │  ├─detail
->│  │  ├─guide
->│  │  ├─login
->│  │  └─main
->│  │      ├─home
->│  │      └─user
->│  └─theme
->└─util
+├─activity
+├─config
+├─constant
+├─di
+├─model
+│  ├─body
+│  └─state
+├─network
+│  ├─api
+│  └─res
+├─ui
+│  ├─components
+│  ├─screen
+│  │  ├─detail
+│  │  ├─guide
+│  │  ├─login
+│  │  └─main
+│  │      ├─home
+│  │      └─user
+│  └─theme
+└─util
 
 ### 包介绍
 
