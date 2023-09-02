@@ -17,5 +17,9 @@ class MyMMKV:ReadWriteProperty<Nothing?,MMKV>{
 }
 object KVKey{
     const val FIRST_ENTER="first_enter"
+    const val AUTO_LOGIN="auto_login"
+    const val REMEMBER_PWD="remember_pwd"
+    const val AGREEMENT="agreement"
+    const val TOKEN="token"
 }
 

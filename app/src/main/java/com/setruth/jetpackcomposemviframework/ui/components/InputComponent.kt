@@ -1,6 +1,7 @@
 package com.setruth.jetpackcomposemviframework.ui.components
 
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material.icons.rounded.Visibility
@@ -57,6 +58,7 @@ fun SingleInput(
             inputErr = (it == "")
             inputChange(it)
         },
+        shape = RoundedCornerShape(10.dp),
         modifier = modifier,
         isError = inputErr,
         singleLine = true,

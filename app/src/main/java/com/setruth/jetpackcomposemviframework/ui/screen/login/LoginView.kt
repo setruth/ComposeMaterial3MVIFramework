@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountBox
+import androidx.compose.material.icons.outlined.Key
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.rounded.Mail
 import androidx.compose.material.icons.rounded.Public
@@ -109,11 +110,11 @@ private fun View(loginViewModel: LoginViewModel = hiltViewModel()) {
         ) {
             Image(
                 modifier = Modifier.size(90.dp),
-                painter = painterResource(id = R.mipmap.logo),
+                painter = painterResource(id = R.mipmap.compose_logo),
                 contentDescription = "logo占位"
             )
             Text(
-                text = "智能矿山管理系统",
+                text = "ComposeMVI架构",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(top = 10.dp, bottom = 30.dp),
                 fontWeight = FontWeight.Bold,
@@ -137,7 +138,7 @@ private fun View(loginViewModel: LoginViewModel = hiltViewModel()) {
                         modifier = Modifier.fillMaxWidth(),
                         inputContent = loginInfoState.loginPwd,
                         inputTip = "输入密码账号",
-                        startIcon = Icons.Outlined.Lock,
+                        startIcon = Icons.Outlined.Key,
                         activeContentHideTag = true,
                     ) {
                         loginViewModel.sendLoginInfoUpdateIntent(LoginInputChangeIntent.Pwd(it))
@@ -154,7 +155,7 @@ private fun View(loginViewModel: LoginViewModel = hiltViewModel()) {
                             RadioButton(
                                 selected = loginModeState.autoLogin,
                                 onClick = {
-
+                                    loginViewModel.sendLoginModeUpdateIntent(LoginModeIntent.ChangeAutoLoginMode)
                                 }
                             )
                             Text(
@@ -169,7 +170,9 @@ private fun View(loginViewModel: LoginViewModel = hiltViewModel()) {
                         ) {
                             RadioButton(
                                 selected = loginModeState.rememberPwd,
-                                onClick = { }
+                                onClick = {
+                                    loginViewModel.sendLoginModeUpdateIntent(LoginModeIntent.ChangeRememberPwdMode)
+                                }
                             )
                             Text(
                                 text = "记住密码",
@@ -222,8 +225,8 @@ private fun View(loginViewModel: LoginViewModel = hiltViewModel()) {
             ) {
                 RadioButton(
                     modifier = Modifier.padding(0.dp),
-                    selected = false,
-                    onClick = { }
+                    selected = loginModeState.agreement,
+                    onClick = { loginViewModel.sendLoginModeUpdateIntent(LoginModeIntent.ChangeAgreementMode) }
                 )
                 Text(
                     text = "授权即同意服务协议和隐私保护指引",
@@ -267,16 +270,6 @@ private fun View(loginViewModel: LoginViewModel = hiltViewModel()) {
                     )
                 }
             }
-            Spacer(modifier = Modifier.padding(top = 15.dp))
-            Text(
-                text = "技术支持：上海xxxxxxxxx有限公司",
-                style = MaterialTheme.typography.labelSmall
-            )
-            Spacer(modifier = Modifier.padding(vertical = 3.dp))
-            Text(
-                text = "软件所属：上海xxxxxxxxx有限公司",
-                style = MaterialTheme.typography.labelSmall
-            )
         }
     }
 }

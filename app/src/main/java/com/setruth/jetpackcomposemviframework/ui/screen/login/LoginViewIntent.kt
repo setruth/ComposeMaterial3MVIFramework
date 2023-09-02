@@ -5,7 +5,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.setruth.jetpackcomposemviframework.constant.KVKey
 import com.setruth.jetpackcomposemviframework.constant.PDSKey
+import com.setruth.jetpackcomposemviframework.constant.kv
 import com.setruth.jetpackcomposemviframework.model.state.TipShowState
 import com.setruth.jetpackcomposemviframework.network.RequestBuilder
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +30,12 @@ sealed class LoginInputChangeIntent {
 
 }
 
+sealed class LoginModeIntent {
+    object ChangeRememberPwdMode : LoginModeIntent()
+    object ChangeAutoLoginMode : LoginModeIntent()
+    object ChangeAgreementMode : LoginModeIntent()
+}
+
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val requestBuilder: RequestBuilder,
@@ -35,9 +43,10 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            initLoginConfig()
+            initLoginAllState()
         }
     }
+
     //登录通过状态
     private var _loginRequestState = MutableStateFlow(LoginRequestState.NOTING)
     val loginRequestState = _loginRequestState.asStateFlow()
@@ -53,6 +62,8 @@ class LoginViewModel @Inject constructor(
     //提示显示状态
     private var _tipShowState = MutableStateFlow(TipShowState())
     val tipShowState = _tipShowState.asStateFlow()
+
+    /*****************************handler intent*****************************************/
     fun sendLoginIntent(intent: LoginIntent) {
         when (intent) {
             LoginIntent.LoginRequest -> loginRequest()
@@ -71,6 +82,40 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    fun sendLoginModeUpdateIntent(loginModeIntent: LoginModeIntent) {
+        when (loginModeIntent) {
+            LoginModeIntent.ChangeAutoLoginMode -> {
+                _loginModeState.update {
+                    it.copy(autoLogin = !it.autoLogin)
+                }
+                if (!loginModeState.value.rememberPwd) {
+                    _loginModeState.update {
+                        it.copy(rememberPwd = !it.rememberPwd)
+                    }
+                }
+            }
+
+            LoginModeIntent.ChangeRememberPwdMode -> {
+                _loginModeState.update {
+                    it.copy(rememberPwd = !it.rememberPwd)
+                }
+                if (!loginModeState.value.rememberPwd && loginModeState.value.autoLogin) {
+                    _loginModeState.update {
+                        it.copy(autoLogin = !it.autoLogin)
+                    }
+                }
+            }
+
+            LoginModeIntent.ChangeAgreementMode -> {
+                _loginModeState.update {
+                    it.copy(agreement = !it.agreement)
+                }
+            }
+        }
+    }
+
+    /*****************************private fun*****************************************/
+
     private fun showTip(tipMsg: String) = viewModelScope.launch {
         _tipShowState.update {
             it.copy(showTip = true, tipMsg = tipMsg)
@@ -83,25 +128,25 @@ class LoginViewModel @Inject constructor(
 
     private fun loginRequest() = viewModelScope.launch {
         loginInfoState.value.apply {
-            if (loginAct == ""){
+            if (loginAct == "") {
                 showTip("账号不能为空")
                 return@launch
             }
-            if (loginPwd == ""){
+            if (loginPwd == "") {
                 showTip("密码不能为空")
                 return@launch
             }
+        }
+        if (!loginModeState.value.agreement) {
+            showTip("请同意用户协议")
+            return@launch
         }
         _loginRequestState.update {
             LoginRequestState.LOADING
         }
         //模拟网络请求
         delay(2000L)
-        val preferences = dataStore.data.first()
-        dataStore.edit {
-            it[PDSKey.ACCOUNT_PDS] = loginInfoState.value.loginAct
-            it[PDSKey.PASSWORD_PDS] = loginInfoState.value.loginPwd
-        }
+        saveLoginAllState()
         _loginRequestState.update {
             LoginRequestState.SUCCESS
         }
@@ -130,12 +175,48 @@ class LoginViewModel @Inject constructor(
 //            }
 //        }
     }
-    private suspend fun initLoginConfig(){
+
+    private suspend fun initLoginAllState() {
         val preferences = dataStore.data.first()
-        preferences[PDSKey.ACCOUNT_PDS]?.also { loginAccount->
+        preferences[PDSKey.ACCOUNT_PDS]?.also { loginAccount ->
             _loginInfoState.update {
                 it.copy(loginAct = loginAccount)
             }
+        }
+        _loginModeState.update {
+            it.copy(agreement = true)
+        }
+        if (!kv.getBoolean(KVKey.REMEMBER_PWD, false)) return
+        preferences[PDSKey.PASSWORD_PDS]?.also { loginPassword ->
+            _loginInfoState.update {
+                it.copy(loginPwd = loginPassword)
+            }
+        }
+        _loginModeState.update {
+            it.copy(rememberPwd = true, autoLogin = kv.getBoolean(KVKey.AUTO_LOGIN,false))
+        }
+
+        if (loginModeState.value.autoLogin) {
+            loginRequest()
+        }
+    }
+
+    private suspend fun saveLoginAllState() {
+        saveLoginInfo()
+        saveLoginMode()
+
+    }
+
+    private fun saveLoginMode() = loginModeState.value.apply {
+        kv.putBoolean(KVKey.AUTO_LOGIN, autoLogin)
+        kv.putBoolean(KVKey.REMEMBER_PWD, rememberPwd)
+        kv.putBoolean(KVKey.AGREEMENT, agreement)
+    }
+
+    private suspend fun saveLoginInfo() {
+        dataStore.edit {
+            it[PDSKey.ACCOUNT_PDS] = loginInfoState.value.loginAct
+            it[PDSKey.PASSWORD_PDS] = loginInfoState.value.loginPwd
         }
     }
 }
