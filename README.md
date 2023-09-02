@@ -57,6 +57,7 @@
 
 ### 包树形结构
 
+```
 ├─activity
 ├─config
 ├─constant
@@ -78,6 +79,9 @@
 │  │      └─user
 │  └─theme
 └─util
+```
+
+
 
 ### 包介绍
 
