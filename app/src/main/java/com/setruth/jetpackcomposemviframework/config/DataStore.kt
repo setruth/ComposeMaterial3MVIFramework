@@ -1,4 +1,4 @@
-package com.setruth.jetpackcomposemviframework.constant
+package com.setruth.jetpackcomposemviframework.config
 
 import android.content.Context
 import androidx.datastore.core.DataStore

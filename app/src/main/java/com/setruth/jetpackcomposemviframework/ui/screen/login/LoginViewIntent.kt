@@ -5,11 +5,14 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.setruth.jetpackcomposemviframework.constant.KVKey
-import com.setruth.jetpackcomposemviframework.constant.PDSKey
-import com.setruth.jetpackcomposemviframework.constant.kv
+import com.setruth.jetpackcomposemviframework.config.KVKey
+import com.setruth.jetpackcomposemviframework.config.PDSKey
+import com.setruth.jetpackcomposemviframework.config.kv
+import com.setruth.jetpackcomposemviframework.model.body.LoginBody
 import com.setruth.jetpackcomposemviframework.model.state.TipShowState
 import com.setruth.jetpackcomposemviframework.network.RequestBuilder
+import com.setruth.jetpackcomposemviframework.network.RequestStatus
+import com.setruth.jetpackcomposemviframework.network.api.UserAPI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -154,7 +157,7 @@ class LoginViewModel @Inject constructor(
         //网络工具使用示例
 //        requestBuilder.apply {
 //            getResponse {
-//                getAPI(UserAPI::class.java).login(
+//                getAPI(UserAPI::class).login(
 //                    LoginBody(
 //                        account = loginInfoState.value.loginAct,
 //                        password = loginInfoState.value.loginPwd

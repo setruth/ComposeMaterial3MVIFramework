@@ -5,9 +5,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.setruth.jetpackcomposemviframework.constant.KVKey
-import com.setruth.jetpackcomposemviframework.constant.PDSKey
-import com.setruth.jetpackcomposemviframework.constant.kv
+import com.setruth.jetpackcomposemviframework.config.KVKey
+import com.setruth.jetpackcomposemviframework.config.PDSKey
+import com.setruth.jetpackcomposemviframework.config.kv
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

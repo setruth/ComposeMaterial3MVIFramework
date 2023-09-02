@@ -1,4 +1,4 @@
-package com.setruth.jetpackcomposemviframework.constant
+package com.setruth.jetpackcomposemviframework.config
 
 import com.tencent.mmkv.MMKV
 import kotlin.properties.ReadWriteProperty

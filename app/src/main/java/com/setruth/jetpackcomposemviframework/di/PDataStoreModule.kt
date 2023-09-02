@@ -3,7 +3,7 @@ package com.setruth.jetpackcomposemviframework.di
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.setruth.jetpackcomposemviframework.constant.dataStore
+import com.setruth.jetpackcomposemviframework.config.dataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

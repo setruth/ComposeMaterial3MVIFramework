@@ -1,10 +1,8 @@
 package com.setruth.jetpackcomposemviframework.ui.screen.guide
 
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
-import com.setruth.jetpackcomposemviframework.constant.KVKey
-import com.setruth.jetpackcomposemviframework.constant.kv
+import com.setruth.jetpackcomposemviframework.config.KVKey
+import com.setruth.jetpackcomposemviframework.config.kv
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

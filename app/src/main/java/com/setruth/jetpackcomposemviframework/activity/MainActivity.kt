@@ -3,13 +3,12 @@ package com.setruth.jetpackcomposemviframework.activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.setruth.jetpackcomposemviframework.config.APPRoute
-import com.setruth.jetpackcomposemviframework.constant.KVKey
-import com.setruth.jetpackcomposemviframework.constant.kv
+import com.setruth.jetpackcomposemviframework.config.KVKey
+import com.setruth.jetpackcomposemviframework.config.kv
 import com.setruth.jetpackcomposemviframework.ui.screen.detail.DetailView
 import com.setruth.jetpackcomposemviframework.ui.screen.guide.GuideView
 import com.setruth.jetpackcomposemviframework.ui.screen.login.LoginView

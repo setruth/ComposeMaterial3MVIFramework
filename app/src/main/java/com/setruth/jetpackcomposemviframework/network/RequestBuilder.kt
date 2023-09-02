@@ -16,6 +16,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import kotlin.reflect.KClass
 
 class RequestBuilder(context: Context) {
     private var retrofitBuilder: Retrofit
@@ -42,7 +43,7 @@ class RequestBuilder(context: Context) {
      * @param apiType
      * @return
      */
-    fun <T> getAPI(apiType: Class<T>): T = retrofitBuilder.create(apiType)
+    fun <T : Any> getAPI(apiType: KClass<out T>): T = retrofitBuilder.create(apiType.java)
 
     /**
      * TODO 处理网络请求
