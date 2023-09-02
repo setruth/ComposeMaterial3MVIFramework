@@ -77,7 +77,7 @@ class RequestBuilder(context: Context) {
         }.flowOn(Dispatchers.IO)
     companion object{
         private const val PORT:Int=1234
-        const val BASE_URL="http://10.0.2.2:$PORT"
+        private const val BASE_URL="http://10.0.2.2:$PORT"
     }
 }
 sealed class RequestStatus<out T> {
