@@ -47,7 +47,7 @@
 
 ### 其他库
 
-- Hit
+- Hilt
 - Navigation
 - Icon+
 - Systemuicontroller
@@ -94,7 +94,7 @@
 - ui：主要存放view的内容，其中的components存放公共的一些组件组合函数，screen存放每个页面对应的view内容，theme存放app的主题，配色，字体等
 - util：存放工具类
 
-## view层的命名习惯（个人习惯，经供参考）
+## view层的命名习惯（个人习惯，仅供参考）
 
 例如Login页面（.ui.screen.login）
 
